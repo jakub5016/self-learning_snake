@@ -224,6 +224,7 @@ def main():
         
 
         if keys_pressed[pygame.K_LEFT]:
+            data.write("LEFT,")
             Hero.rotate(90)
         if keys_pressed[pygame.K_RIGHT]:
             Hero.rotate(270)
