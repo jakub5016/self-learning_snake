@@ -1,13 +1,6 @@
-from ast import And
-from nis import match
-from statistics import mode
 from time import sleep
-from traceback import print_tb
-from typing import overload
-from xmlrpc.server import SimpleXMLRPCDispatcher
 import pygame
 import os
-from enum import Enum  
 import random
 # Consts
 WIDTH = HEIGHT = 900
@@ -224,7 +217,6 @@ def main():
         
 
         if keys_pressed[pygame.K_LEFT]:
-            data.write("LEFT,")
             Hero.rotate(90)
         if keys_pressed[pygame.K_RIGHT]:
             Hero.rotate(270)
@@ -232,8 +224,6 @@ def main():
             Hero.rotate(180)
         if keys_pressed[pygame.K_UP]:
             Hero.rotate(0)  
-        if keys_pressed[pygame.K_a]:
-            Hero.append()
         
         Hero.move()
         for i in star_list:
