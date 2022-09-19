@@ -4,8 +4,8 @@ import os
 import random
 
 WIDTH = HEIGHT = 900
-WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Snake")
+#WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
+#pygame.display.set_caption("Snake")
 BACKGROUND = (186, 255, 255)
 FPS = WIDTH/20
 CLOCK = pygame.time.Clock()
@@ -19,7 +19,7 @@ SPEED = 15
 
 
 def blit(img, x, y): # Use it later!
-    WINDOW.blit(img, (x, y))
+    pygame.display.set_mode((WIDTH, HEIGHT)).blit(img, (x, y))
 
 def star_position(constant):
     return random.randint(7, round((constant/15)-7))*15
@@ -29,7 +29,7 @@ class Snake_head:
     def __init__(self):
         self.Rectangle = pygame.Rect(WIDTH/2, HEIGHT/2, SNAKE_HEAD_IMG.get_width(), SNAKE_HEAD_IMG.get_height()) # Head hitbox
         self.Vector = [0,-1] # Going up
-        WINDOW.blit(SNAKE_HEAD_IMG, (self.Rectangle.x, self.Rectangle.y))
+        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_HEAD_IMG, (self.Rectangle.x, self.Rectangle.y))
     
     def move(self):
         self.Rectangle.x += self.Vector[0] * SPEED
@@ -44,7 +44,7 @@ class Snake_head:
         if self.Rectangle.y < 0 :
             self.Rectangle.y = HEIGHT-15
 
-        WINDOW.blit(SNAKE_HEAD, (self.Rectangle.x, self.Rectangle.y))
+        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_HEAD, (self.Rectangle.x, self.Rectangle.y))
     
     def rotate(self, side):
         global SNAKE_HEAD_IMG 
@@ -71,12 +71,12 @@ class Snake_tail:
     def __init__(self, x = (WIDTH/2) , y = (WIDTH/2)+SPEED, base_Vector = [0,-1]):
         self.Rectangle = pygame.Rect(x, y, SNAKE_HEAD_IMG.get_width(), SNAKE_HEAD_IMG.get_height())
         self.Vector = base_Vector # Going up        
-        WINDOW.blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
+        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
     
     def move(self, x, y):
         self.Rectangle.x = x
         self.Rectangle.y = y
-        WINDOW.blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
+        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
 
 
 class Snake(Snake_head):
