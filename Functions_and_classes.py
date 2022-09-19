@@ -82,7 +82,7 @@ class Snake_tail:
 class Snake(Snake_head):
     def __init__(self):
         super().__init__()
-        self.list_of_tails = [Snake_tail(), Snake_tail()]
+        self.list_of_tails = [Snake_tail(), Snake_tail(y=(WIDTH/2)+SPEED+SPEED)]
         self.places = [[(WIDTH/2) + SPEED, (HEIGHT/2) + SPEED], [(WIDTH/2) + 2*SPEED, (HEIGHT/2) + 2*SPEED]]   
         self.score = 0
     
