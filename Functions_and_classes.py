@@ -1,3 +1,4 @@
+from curses import window
 from time import sleep
 import pygame
 import os
@@ -18,18 +19,19 @@ STAR_IMG = pygame.image.load(os.path.join('Assets', 'Star.png'))
 SPEED = 15
 
 
-def blit(img, x, y): # Use it later!
-    pygame.display.set_mode((WIDTH, HEIGHT)).blit(img, (x, y))
+def blit(img, x, y, window): # Use it later!
+    window.blit(img, (x, y))
 
 def star_position(constant):
     return random.randint(7, round((constant/15)-7))*15
 
 # Classes for snake construction
 class Snake_head:
-    def __init__(self):
+    def __init__(self, window):
         self.Rectangle = pygame.Rect(WIDTH/2, HEIGHT/2, SNAKE_HEAD_IMG.get_width(), SNAKE_HEAD_IMG.get_height()) # Head hitbox
         self.Vector = [0,-1] # Going up
-        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_HEAD_IMG, (self.Rectangle.x, self.Rectangle.y))
+        self.window = window #Creating own window to dispaly
+        self.window.blit(SNAKE_HEAD_IMG, (self.Rectangle.x, self.Rectangle.y))
     
     def move(self):
         self.Rectangle.x += self.Vector[0] * SPEED
@@ -44,7 +46,7 @@ class Snake_head:
         if self.Rectangle.y < 0 :
             self.Rectangle.y = HEIGHT-15
 
-        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_HEAD, (self.Rectangle.x, self.Rectangle.y))
+        self.window.blit(SNAKE_HEAD, (self.Rectangle.x, self.Rectangle.y))
     
     def rotate(self, side):
         global SNAKE_HEAD_IMG 
@@ -68,21 +70,22 @@ class Snake_head:
 
         
 class Snake_tail:
-    def __init__(self, x = (WIDTH/2) , y = (WIDTH/2)+SPEED, base_Vector = [0,-1]):
+    def __init__(self, window, x = (WIDTH/2) , y = (WIDTH/2)+SPEED, base_Vector = [0,-1]):
+        self.window = window
         self.Rectangle = pygame.Rect(x, y, SNAKE_HEAD_IMG.get_width(), SNAKE_HEAD_IMG.get_height())
         self.Vector = base_Vector # Going up        
-        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
+        self.window.blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
     
     def move(self, x, y):
         self.Rectangle.x = x
         self.Rectangle.y = y
-        pygame.display.set_mode((WIDTH, HEIGHT)).blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
+        self.window.blit(SNAKE_TAIL_IMG, (self.Rectangle.x, self.Rectangle.y))
 
 
 class Snake(Snake_head):
-    def __init__(self):
-        super().__init__()
-        self.list_of_tails = [Snake_tail(), Snake_tail(y=(WIDTH/2)+SPEED+SPEED)]
+    def __init__(self, window):
+        super().__init__(window=window)
+        self.list_of_tails = [Snake_tail(window=self.window), Snake_tail(y=(WIDTH/2)+SPEED+SPEED, window=self.window)]
         self.places = [[(WIDTH/2) + SPEED, (HEIGHT/2) + SPEED], [(WIDTH/2) + 2*SPEED, (HEIGHT/2) + 2*SPEED]]   
         self.score = 0
     
@@ -92,7 +95,7 @@ class Snake(Snake_head):
         Vector_x = (self.list_of_tails[-1].Vector[0])
         Vector_y = (self.list_of_tails[-1].Vector[1])
 
-        self.list_of_tails.append(Snake_tail(x= x - (SPEED* Vector_x), y = y - (SPEED* Vector_y)))
+        self.list_of_tails.append(Snake_tail(x= x - (SPEED* Vector_x), y = y - (SPEED* Vector_y), window=self.window))
         self.places.append([x, y])
     
     def move(self):       
@@ -151,12 +154,13 @@ class Snake(Snake_head):
             return True
 
 class Star:
-    def __init__(self, x, y):
+    def __init__(self, x, y, window):
         self.Rectangle = pygame.Rect(x, y, STAR_IMG.get_width(), STAR_IMG.get_height()) # Creating rectangle
-        blit(STAR_IMG, x, y)
+        self.window = window
+        blit(STAR_IMG, x, y, window=self.window)
 
     def draw(self):
-        blit(STAR_IMG, self.Rectangle.x, self.Rectangle.y)
+        blit(STAR_IMG, self.Rectangle.x, self.Rectangle.y, window=self.window)
     
     def change_position(self):
         self.Rectangle.x = star_position(WIDTH)
