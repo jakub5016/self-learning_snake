@@ -1,2 +1,5 @@
-Hi, in this project i'm going to create self learing version of snake that i've created before.
-Here is link to this project: https://github.com/JAKGIL/pygame
+## Description
+
+This project is forked from my pervous accout: github.com/JAKGIL. I'm going to develop it.
+
+Project bases on the game created earlier by me: https://github.com/JAKGIL/pygame.
